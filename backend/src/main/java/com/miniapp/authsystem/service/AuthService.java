@@ -37,6 +37,8 @@ public class AuthService {
                 null,
                 savedUser.getUserId(),
                 savedUser.getEmail(),
+                savedUser.getFirstName(),
+                savedUser.getLastName(),
                 "Registration successful"
         );
     }
@@ -55,6 +57,8 @@ public class AuthService {
                 token,
                 user.getUserId(),
                 user.getEmail(),
+                user.getFirstName(),
+                user.getLastName(),
                 "Login successful"
         );
     }
