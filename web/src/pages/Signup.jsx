@@ -1,16 +1,20 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AUTH_BASE_URL, apiRequest } from '../api/client';
 
-function Signup({ onSignupSuccess, onSwitchToLogin }) {
+function Signup({ onSignupSuccess }) {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     email: '',
     password: '',
   });
+
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -26,12 +30,16 @@ function Signup({ onSignupSuccess, onSwitchToLogin }) {
     setLoading(true);
 
     try {
-      const { response, data } = await apiRequest(`${AUTH_BASE_URL}/register`, {
-        method: 'POST',
-        body: JSON.stringify(formData),
-      });
+      const { response, data } = await apiRequest(
+        `${AUTH_BASE_URL}/register`,
+        {
+          method: 'POST',
+          body: JSON.stringify(formData),
+        }
+      );
 
       if (response.ok) {
+        // If backend returns token (auto-login after register)
         if (data.token) {
           onSignupSuccess({
             token: data.token,
@@ -40,9 +48,15 @@ function Signup({ onSignupSuccess, onSwitchToLogin }) {
             firstName: data.firstName,
             lastName: data.lastName,
           });
+
+          navigate('/dashboard');
         } else {
+          // If backend requires manual login
           setSuccess(data.message || 'Registration successful');
-          setTimeout(() => onSwitchToLogin(), 1500);
+
+          setTimeout(() => {
+            navigate('/login');
+          }, 1500);
         }
       } else {
         setError(data.message || 'Registration failed');
@@ -57,8 +71,10 @@ function Signup({ onSignupSuccess, onSwitchToLogin }) {
   return (
     <div className="auth-container">
       <h2>Sign Up</h2>
+
       {error && <div className="error-message">{error}</div>}
       {success && <div className="success-message">{success}</div>}
+
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>First Name</label>
@@ -71,6 +87,7 @@ function Signup({ onSignupSuccess, onSwitchToLogin }) {
             placeholder="Enter your first name"
           />
         </div>
+
         <div className="form-group">
           <label>Last Name</label>
           <input
@@ -82,6 +99,7 @@ function Signup({ onSignupSuccess, onSwitchToLogin }) {
             placeholder="Enter your last name"
           />
         </div>
+
         <div className="form-group">
           <label>Email</label>
           <input
@@ -93,6 +111,7 @@ function Signup({ onSignupSuccess, onSwitchToLogin }) {
             placeholder="Enter your email"
           />
         </div>
+
         <div className="form-group">
           <label>Password</label>
           <input
@@ -104,13 +123,15 @@ function Signup({ onSignupSuccess, onSwitchToLogin }) {
             placeholder="Enter your password"
           />
         </div>
+
         <button type="submit" className="btn" disabled={loading}>
           {loading ? 'Creating account...' : 'Sign Up'}
         </button>
       </form>
+
       <div className="switch-link">
         Already have an account?{' '}
-        <button onClick={onSwitchToLogin}>Login</button>
+        <button onClick={() => navigate('/login')}>Login</button>
       </div>
     </div>
   );

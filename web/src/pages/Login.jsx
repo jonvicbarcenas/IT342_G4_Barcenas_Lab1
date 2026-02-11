@@ -1,11 +1,13 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AUTH_BASE_URL, apiRequest } from '../api/client';
 
-function Login({ onLoginSuccess, onSwitchToSignup }) {
+function Login({ onLoginSuccess }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -67,7 +69,7 @@ function Login({ onLoginSuccess, onSwitchToSignup }) {
       </form>
       <div className="switch-link">
         Don't have an account?{' '}
-        <button onClick={onSwitchToSignup}>Sign up</button>
+        <button onClick={() => navigate('/signup')}>Sign up</button>
       </div>
     </div>
   );

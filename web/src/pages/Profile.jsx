@@ -1,4 +1,8 @@
-function Profile({ user, onLogout, onNavigateToDashboard }) {
+import { useNavigate } from 'react-router-dom';
+
+function Profile({ user, onLogout,  }) {
+  const navigate = useNavigate();
+
   const getInitials = (email) => {
     return email.charAt(0).toUpperCase();
   };
@@ -6,7 +10,7 @@ function Profile({ user, onLogout, onNavigateToDashboard }) {
   return (
     <div className="profile-container">
       <div className="profile-nav">
-        <button className="nav-btn" onClick={onNavigateToDashboard}>
+        <button className="nav-btn" onClick={() => navigate('/dashboard')}>
           ← Back to Dashboard
         </button>
       </div>

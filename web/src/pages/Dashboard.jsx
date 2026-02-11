@@ -1,4 +1,8 @@
-function Dashboard({ user, onLogout, onNavigateToProfile }) {
+import { useNavigate } from 'react-router-dom';
+
+function Dashboard({ user, onLogout }) {
+  const navigate = useNavigate();
+
   return (
     <div className="dashboard-container">
       <h2>Dashboard</h2>
@@ -7,7 +11,7 @@ function Dashboard({ user, onLogout, onNavigateToProfile }) {
       </p>
       
       <div className="dashboard-actions">
-        <button className="btn-secondary" onClick={onNavigateToProfile}>
+        <button className="btn-secondary" onClick={() => navigate('/profile')}>
           View Profile
         </button>
         <button className="btn-logout" onClick={onLogout}>
@@ -16,6 +20,6 @@ function Dashboard({ user, onLogout, onNavigateToProfile }) {
       </div>
     </div>
   );
-}
+} 
 
 export default Dashboard;
