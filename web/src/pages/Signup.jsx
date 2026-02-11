@@ -1,6 +1,5 @@
 import { useState } from 'react';
-
-const API_URL = 'http://localhost:8080/api/auth';
+import { AUTH_BASE_URL, apiRequest } from '../api/client';
 
 function Signup({ onSignupSuccess, onSwitchToLogin }) {
   const [formData, setFormData] = useState({
@@ -27,15 +26,10 @@ function Signup({ onSignupSuccess, onSwitchToLogin }) {
     setLoading(true);
 
     try {
-      const response = await fetch(`${API_URL}/register`, {
+      const { response, data } = await apiRequest(`${AUTH_BASE_URL}/register`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify(formData),
       });
-
-      const data = await response.json();
 
       if (response.ok) {
         if (data.token) {

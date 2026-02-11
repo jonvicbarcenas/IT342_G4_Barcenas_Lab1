@@ -1,6 +1,5 @@
 import { useState } from 'react';
-
-const API_URL = 'http://localhost:8080/api/auth';
+import { AUTH_BASE_URL, apiRequest } from '../api/client';
 
 function Login({ onLoginSuccess, onSwitchToSignup }) {
   const [email, setEmail] = useState('');
@@ -14,15 +13,10 @@ function Login({ onLoginSuccess, onSwitchToSignup }) {
     setLoading(true);
 
     try {
-      const response = await fetch(`${API_URL}/login`, {
+      const { response, data } = await apiRequest(`${AUTH_BASE_URL}/login`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({ email, password }),
       });
-
-      const data = await response.json();
 
       if (response.ok && data.token) {
         onLoginSuccess({
