@@ -1,6 +1,7 @@
 ## DONE
-    - 
-    - 
+    - login ui  
+    - register ui
+    - backend
 
 
 ## IN PROGRESS
@@ -10,4 +11,3 @@
 
 
 ## TO DO
-    -BACKEND CALL
